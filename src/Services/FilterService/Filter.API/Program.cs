@@ -1,19 +1,20 @@
+using Filter.API.Consumers.Game;
+using Filter.API.Extensions;
+using Filter.API.Services;
 using MassTransit;
-using Search.API.Consumers.Game;
-using Search.API.Data;
-using Search.API.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DatabaseSettings"));
-
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddElasticSearch(builder.Configuration);
+
+builder.Services.AddScoped<IFilterGameService, FilterGameService>();
 
 builder.Services.AddMassTransit(options =>
 {
-    options.AddConsumersFromNamespaceContaining<GameCreatedConsumer>();
+    options.AddConsumersFromNamespaceContaining<GameCreatedFilterConsumer>();
 
-    options.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false));
+    options.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("filter", false));
     options.UsingRabbitMq((context, config) =>
     {
         config.Host(builder.Configuration["RabbitMQ:Host"], "/", host =>
@@ -22,9 +23,9 @@ builder.Services.AddMassTransit(options =>
             host.Password(builder.Configuration["RabbitMQ:Password"] ?? "guest");
         });
 
-        config.ReceiveEndpoint("search-game-created", e =>
+        config.ReceiveEndpoint("filter-game-created", e =>
         {
-            e.ConfigureConsumer<GameCreatedConsumer>(context);
+            e.ConfigureConsumer<GameCreatedFilterConsumer>(context);
         });
 
         config.ConfigureEndpoints(context);
@@ -50,18 +51,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.Lifetime.ApplicationStarted.Register(async () =>
-{
-    try
-    {
-        await DatabaseInitializer.InitializeAsync(app);
-    }
-    catch (Exception)
-    {
-        throw;
-    }
-
-});
 
 app.Run();

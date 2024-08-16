@@ -26,7 +26,6 @@ namespace Search.API.Consumers.Game
                     .Modify(x => x.GameName, gameItem.GameName)
                     .Modify(x => x.GameAuthor, gameItem.GameAuthor)
                     .Modify(x => x.Price, gameItem.Price)
-                    .Modify(x => x.VideoPath, gameItem.VideoPath)
                     .Modify(x => x.GameInfo, gameItem.GameInfo)
                     .Modify(x => x.MinimumSystemRequirements, gameItem.MinimumSystemRequirements)
                     .Modify(x => x.RecommendedSystemRequirements, gameItem.RecommendedSystemRequirements)

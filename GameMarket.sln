@@ -31,6 +31,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contracts", "Contracts", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Contracts", "src\Contracts\Game.Contracts\Game.Contracts.csproj", "{B418341B-AC4A-47A3-9AB3-60FA8D2D8893}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FilterService", "FilterService", "{3B236BFC-A09C-4D63-9CAD-4D834367A9D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Filter.API", "src\Services\FilterService\Filter.API\Filter.API.csproj", "{3DC50670-8139-4B27-A58B-5D4E958CD639}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +65,10 @@ Global
 		{B418341B-AC4A-47A3-9AB3-60FA8D2D8893}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B418341B-AC4A-47A3-9AB3-60FA8D2D8893}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B418341B-AC4A-47A3-9AB3-60FA8D2D8893}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DC50670-8139-4B27-A58B-5D4E958CD639}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DC50670-8139-4B27-A58B-5D4E958CD639}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DC50670-8139-4B27-A58B-5D4E958CD639}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DC50670-8139-4B27-A58B-5D4E958CD639}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +87,8 @@ Global
 		{C31564E0-7608-48E3-B915-3D87046A028D} = {D39A8B40-3405-4F9B-BEF6-8FA040F26116}
 		{47BC3CEB-AD79-400B-B4B4-23B6C459B9F6} = {6D5F1FAE-2388-4BB6-8579-F7BA6021656B}
 		{B418341B-AC4A-47A3-9AB3-60FA8D2D8893} = {47BC3CEB-AD79-400B-B4B4-23B6C459B9F6}
+		{3B236BFC-A09C-4D63-9CAD-4D834367A9D8} = {311D2A4C-C02D-4DAC-969A-93D77C606326}
+		{3DC50670-8139-4B27-A58B-5D4E958CD639} = {3B236BFC-A09C-4D63-9CAD-4D834367A9D8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BFD514E5-BF49-46C9-A732-032E7C0545B6}
