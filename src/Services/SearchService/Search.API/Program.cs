@@ -1,26 +1,19 @@
-using Game.Application.Common.Extensions;
-using Game.Persistence.Context;
-using Microsoft.EntityFrameworkCore;
-using Game.API.Registration;
 using MassTransit;
+using Search.API.Consumers.Game;
+using Search.API.Data;
+using Search.API.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<GameContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DatabaseSettings"));
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddMassTransit(options =>
 {
-    options.AddEntityFrameworkOutbox<GameContext>(x =>
-    {
-        x.QueryDelay = TimeSpan.FromSeconds(10);
-        x.UseSqlServer();
-        x.UseBusOutbox();
-    });
+    options.AddConsumersFromNamespaceContaining<GameCreatedConsumer>();
 
-    options.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("game", false));
+    options.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false));
     options.UsingRabbitMq((context, config) =>
     {
         config.Host(builder.Configuration["RabbitMQ:Host"], "/", host =>
@@ -28,12 +21,16 @@ builder.Services.AddMassTransit(options =>
             host.Username(builder.Configuration["RabbitMQ:Username"] ?? "guest");
             host.Password(builder.Configuration["RabbitMQ:Password"] ?? "guest");
         });
+
+        config.ReceiveEndpoint("game-created", e =>
+        {
+            //e.UseMessageRetry(x => x.Interval(3, 5));
+            e.ConfigureConsumer<GameCreatedConsumer>(context);
+        });
+
         config.ConfigureEndpoints(context);
     });
 });
-
-builder.Services.ApplicationService(builder.Configuration);
-builder.Services.ApiService(builder.Configuration);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -54,5 +51,18 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.Lifetime.ApplicationStarted.Register(async () =>
+{
+    try
+    {
+        await DatabaseInitializer.InitializeAsync(app);
+    }
+    catch (Exception)
+    {
+        throw;
+    }
+
+});
 
 app.Run();

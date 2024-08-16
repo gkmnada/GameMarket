@@ -1,10 +1,8 @@
-﻿using Game.Application.Common.Base;
-using MediatR;
-
-namespace Game.Application.Features.Mediator.Commands.GameCommands
+﻿namespace Game.Contracts.Events
 {
-    public class CreateGameCommand : IRequest<BaseResponseModel>
+    public class GameUpdated
     {
+        public string Id { get; set; }
         public string GameName { get; set; }
         public string GameAuthor { get; set; }
         public decimal Price { get; set; }

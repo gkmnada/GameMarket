@@ -1,4 +1,5 @@
 ﻿using Game.Application.Features.Mediator.Commands.GameCommands;
+using Game.Application.Features.Mediator.Queries.GameQueries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,8 +17,29 @@ namespace Game.API.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllGames()
+        {
+            var response = await _mediator.Send(new GetGameQuery());
+            return Ok(response);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateGame(CreateGameCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateGame(UpdateGameCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteGame(DeleteGameCommand command)
         {
             var response = await _mediator.Send(command);
             return Ok(response);

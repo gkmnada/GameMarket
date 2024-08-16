@@ -3,8 +3,9 @@ using MediatR;
 
 namespace Game.Application.Features.Mediator.Commands.GameCommands
 {
-    public class CreateGameCommand : IRequest<BaseResponseModel>
+    public class UpdateGameCommand : IRequest<BaseResponseModel>
     {
+        public string Id { get; set; }
         public string GameName { get; set; }
         public string GameAuthor { get; set; }
         public decimal Price { get; set; }

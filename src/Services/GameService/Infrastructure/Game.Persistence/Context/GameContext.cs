@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Game.Domain.Entities;
+using MassTransit;
 
 namespace Game.Persistence.Context
 {
@@ -16,6 +16,8 @@ namespace Game.Persistence.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Domain.Entities.Game>()
                 .HasOne(x => x.Category)
                 .WithMany(x => x.Games)
@@ -25,6 +27,10 @@ namespace Game.Persistence.Context
                 .HasOne(x => x.Game)
                 .WithMany(x => x.GameImages)
                 .HasForeignKey(x => x.GameID);
+
+            modelBuilder.AddInboxStateEntity();
+            modelBuilder.AddOutboxMessageEntity();
+            modelBuilder.AddOutboxStateEntity();
         }
     }
 }

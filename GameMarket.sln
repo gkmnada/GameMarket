@@ -15,13 +15,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{B712BB9B-7E72-48A6-A3DC-3CC7BA37C190}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Domain", "src\Services\GameService\Core\Game.Domain\Game.Domain.csproj", "{030B5D24-51BB-48D7-9765-40E61249EFE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Domain", "src\Services\GameService\Core\Game.Domain\Game.Domain.csproj", "{030B5D24-51BB-48D7-9765-40E61249EFE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Application", "src\Services\GameService\Core\Game.Application\Game.Application.csproj", "{EDDDC757-E607-4B0E-9F08-25E20AF4F085}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Application", "src\Services\GameService\Core\Game.Application\Game.Application.csproj", "{EDDDC757-E607-4B0E-9F08-25E20AF4F085}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Persistence", "src\Services\GameService\Infrastructure\Game.Persistence\Game.Persistence.csproj", "{5BFC1963-4925-4567-A9FB-EFF15561DAB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Persistence", "src\Services\GameService\Infrastructure\Game.Persistence\Game.Persistence.csproj", "{5BFC1963-4925-4567-A9FB-EFF15561DAB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.API", "src\Services\GameService\Presentation\Game.API\Game.API.csproj", "{370DF285-B2B8-4921-A7C1-BEF4903E4697}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.API", "src\Services\GameService\Presentation\Game.API\Game.API.csproj", "{370DF285-B2B8-4921-A7C1-BEF4903E4697}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SearchService", "SearchService", "{D39A8B40-3405-4F9B-BEF6-8FA040F26116}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Search.API", "src\Services\SearchService\Search.API\Search.API.csproj", "{C31564E0-7608-48E3-B915-3D87046A028D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contracts", "Contracts", "{47BC3CEB-AD79-400B-B4B4-23B6C459B9F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Contracts", "src\Contracts\Game.Contracts\Game.Contracts.csproj", "{B418341B-AC4A-47A3-9AB3-60FA8D2D8893}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +53,14 @@ Global
 		{370DF285-B2B8-4921-A7C1-BEF4903E4697}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{370DF285-B2B8-4921-A7C1-BEF4903E4697}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{370DF285-B2B8-4921-A7C1-BEF4903E4697}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C31564E0-7608-48E3-B915-3D87046A028D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C31564E0-7608-48E3-B915-3D87046A028D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C31564E0-7608-48E3-B915-3D87046A028D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C31564E0-7608-48E3-B915-3D87046A028D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B418341B-AC4A-47A3-9AB3-60FA8D2D8893}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B418341B-AC4A-47A3-9AB3-60FA8D2D8893}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B418341B-AC4A-47A3-9AB3-60FA8D2D8893}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B418341B-AC4A-47A3-9AB3-60FA8D2D8893}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +75,10 @@ Global
 		{EDDDC757-E607-4B0E-9F08-25E20AF4F085} = {CA9CDB0B-2792-4BEB-8AD7-AB96632D8AAD}
 		{5BFC1963-4925-4567-A9FB-EFF15561DAB3} = {1C545635-C8B1-4812-B245-CB58E73EC786}
 		{370DF285-B2B8-4921-A7C1-BEF4903E4697} = {B712BB9B-7E72-48A6-A3DC-3CC7BA37C190}
+		{D39A8B40-3405-4F9B-BEF6-8FA040F26116} = {311D2A4C-C02D-4DAC-969A-93D77C606326}
+		{C31564E0-7608-48E3-B915-3D87046A028D} = {D39A8B40-3405-4F9B-BEF6-8FA040F26116}
+		{47BC3CEB-AD79-400B-B4B4-23B6C459B9F6} = {6D5F1FAE-2388-4BB6-8579-F7BA6021656B}
+		{B418341B-AC4A-47A3-9AB3-60FA8D2D8893} = {47BC3CEB-AD79-400B-B4B4-23B6C459B9F6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BFD514E5-BF49-46C9-A732-032E7C0545B6}

@@ -1,9 +1,9 @@
-﻿using Game.Application.Common.Base;
-using MediatR;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Entities;
 
-namespace Game.Application.Features.Mediator.Commands.GameCommands
+namespace Search.API.Models.Game
 {
-    public class CreateGameCommand : IRequest<BaseResponseModel>
+    public class GameItem : Entity
     {
         public string GameName { get; set; }
         public string GameAuthor { get; set; }
@@ -14,5 +14,6 @@ namespace Game.Application.Features.Mediator.Commands.GameCommands
         public string RecommendedSystemRequirements { get; set; }
         public string Description { get; set; }
         public string CategoryID { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }
