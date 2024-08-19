@@ -31,7 +31,7 @@
                                 <label asp-for="Input.Password"></label>
                                 <input type="password" class="form-control" placeholder="Password" asp-for="Input.Password" autocomplete="off">
                             </div>
-                            
+
                             @if (Model.View.AllowRememberLogin)
                             {
                                 <div class="form-group">
@@ -43,7 +43,11 @@
                                     </div>
                                 </div>
                             }
-                            
+
+                            <a class="pb-2 d-block" asp-page="../Register/Index" asp-route-returnUrl="@Model.Input.ReturnUrl">
+                                Don't have an account?
+                            </a>
+
                             <button class="btn btn-primary" name="Input.Button" value="login">Login</button>
                             <button class="btn btn-secondary" name="Input.Button" value="cancel">Cancel</button>
                         </form>

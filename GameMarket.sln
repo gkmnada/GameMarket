@@ -25,15 +25,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.API", "src\Services\Ga
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SearchService", "SearchService", "{D39A8B40-3405-4F9B-BEF6-8FA040F26116}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Search.API", "src\Services\SearchService\Search.API\Search.API.csproj", "{C31564E0-7608-48E3-B915-3D87046A028D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Search.API", "src\Services\SearchService\Search.API\Search.API.csproj", "{C31564E0-7608-48E3-B915-3D87046A028D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contracts", "Contracts", "{47BC3CEB-AD79-400B-B4B4-23B6C459B9F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Contracts", "src\Contracts\Game.Contracts\Game.Contracts.csproj", "{B418341B-AC4A-47A3-9AB3-60FA8D2D8893}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Contracts", "src\Contracts\Game.Contracts\Game.Contracts.csproj", "{B418341B-AC4A-47A3-9AB3-60FA8D2D8893}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FilterService", "FilterService", "{3B236BFC-A09C-4D63-9CAD-4D834367A9D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Filter.API", "src\Services\FilterService\Filter.API\Filter.API.csproj", "{3DC50670-8139-4B27-A58B-5D4E958CD639}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filter.API", "src\Services\FilterService\Filter.API\Filter.API.csproj", "{3DC50670-8139-4B27-A58B-5D4E958CD639}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityService", "IdentityService", "{CDCB58C4-0A4F-4246-BB6A-883A92BA6269}"
 EndProject

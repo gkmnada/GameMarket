@@ -1,0 +1,73 @@
+﻿@page
+@model IdentityService.Pages.Account.Register.IndexModel
+
+<div class="login-page">
+    <div class="lead">
+        <h1>Register</h1>
+        <p>Create a account</p>
+    </div>
+
+    <partial name="_ValidationSummary" />
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Local Account</h2>
+                </div>
+
+                <div class="card-body">
+                    <form asp-page="/Account/Register/Index">
+                        <input type="hidden" asp-for="Input.ReturnUrl" />
+
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="form-group">
+                                    <label asp-for="Input.Username"></label>
+                                    <input class="form-control" placeholder="Username" asp-for="Input.Username" autofocus>
+                                </div>
+                            </div>
+                            <div class="col-xl-12">
+                                <div class="form-group">
+                                    <label asp-for="Input.Email"></label>
+                                    <input class="form-control" placeholder="Email" asp-for="Input.Email" autofocus>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label asp-for="Input.Name"></label>
+                                    <input class="form-control" placeholder="Name" asp-for="Input.Name" autofocus>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label asp-for="Input.Surname"></label>
+                                    <input class="form-control" placeholder="Surname" asp-for="Input.Surname" autofocus>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-12">
+                                <div class="form-group">
+                                    <label asp-for="Input.Password"></label>
+                                    <input type="password" class="form-control" placeholder="Password" asp-for="Input.Password" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <a class="pb-2 d-block" asp-page="../Login/Index" asp-route-returnUrl="@Model.Input.ReturnUrl">
+                            Already have an account?
+                        </a>
+                        <button class="btn btn-primary" name="Input.Button" value="register">Register</button>
+                        <button class="btn btn-secondary" name="Input.Button" value="cancel">Cancel</button>
+                    </form>
+                </div>
+                @if (Model.IsSuccess)
+                {
+                    <div class="alert alert-success mt-2">
+                        <strong>Successfully Registered</strong> - You can now login
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
