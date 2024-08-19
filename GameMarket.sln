@@ -39,6 +39,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityService", "Identity
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityService", "src\Services\IdentityService\IdentityService.csproj", "{2DF5349D-948A-4B78-842E-5038BBAD017B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BasketService", "BasketService", "{FB47F60D-AB54-4FBF-ADE3-01106D8EA790}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basket.API", "src\Services\BasketService\Basket.API\Basket.API.csproj", "{D7C254BB-5C10-4B8F-9075-7BC44F46F198}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +81,10 @@ Global
 		{2DF5349D-948A-4B78-842E-5038BBAD017B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DF5349D-948A-4B78-842E-5038BBAD017B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DF5349D-948A-4B78-842E-5038BBAD017B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7C254BB-5C10-4B8F-9075-7BC44F46F198}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7C254BB-5C10-4B8F-9075-7BC44F46F198}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7C254BB-5C10-4B8F-9075-7BC44F46F198}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7C254BB-5C10-4B8F-9075-7BC44F46F198}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,6 +107,8 @@ Global
 		{3DC50670-8139-4B27-A58B-5D4E958CD639} = {3B236BFC-A09C-4D63-9CAD-4D834367A9D8}
 		{CDCB58C4-0A4F-4246-BB6A-883A92BA6269} = {311D2A4C-C02D-4DAC-969A-93D77C606326}
 		{2DF5349D-948A-4B78-842E-5038BBAD017B} = {CDCB58C4-0A4F-4246-BB6A-883A92BA6269}
+		{FB47F60D-AB54-4FBF-ADE3-01106D8EA790} = {311D2A4C-C02D-4DAC-969A-93D77C606326}
+		{D7C254BB-5C10-4B8F-9075-7BC44F46F198} = {FB47F60D-AB54-4FBF-ADE3-01106D8EA790}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BFD514E5-BF49-46C9-A732-032E7C0545B6}

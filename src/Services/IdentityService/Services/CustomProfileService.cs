@@ -25,6 +25,7 @@ namespace IdentityService.Services
             {
                 new Claim(JwtClaimTypes.Name, user.UserName),
                 new Claim(JwtClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
 
             context.IssuedClaims.AddRange(claims);
