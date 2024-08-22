@@ -1,10 +1,27 @@
 using Basket.API.Services;
+using Game.Contracts.Events;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddMassTransit(options =>
+{
+    options.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("basket", false));
+    options.UsingRabbitMq((context, config) =>
+    {
+        config.Host(builder.Configuration["RabbitMQ:Host"], "/", host =>
+        {
+            host.Username(builder.Configuration["RabbitMQ:Username"] ?? "guest");
+            host.Password(builder.Configuration["RabbitMQ:Password"] ?? "guest");
+        });
+        config.ConfigureEndpoints(context);
+    });
+});
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {

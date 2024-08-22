@@ -1,5 +1,8 @@
-﻿using Basket.API.Common.Base;
+﻿using AutoMapper;
+using Basket.API.Common.Base;
 using Basket.API.Models;
+using Game.Contracts.Events;
+using MassTransit;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using System.Security.Claims;
@@ -9,17 +12,21 @@ namespace Basket.API.Services
     public class BasketService : IBasketService
     {
         private readonly IDatabase _database;
-        public string connectionString;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        public IPublishEndpoint _publishEndpoint;
+        private readonly IMapper _mapper;
         public string user;
+        public string connectionString;
 
-        public BasketService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public BasketService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, IPublishEndpoint publishEndpoint, IMapper mapper)
         {
             connectionString = configuration.GetValue<string>("RedisDatabase");
             ConnectionMultiplexer connection = ConnectionMultiplexer.Connect(connectionString);
             _database = connection.GetDatabase();
             _httpContextAccessor = httpContextAccessor;
             user = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            _publishEndpoint = publishEndpoint;
+            _mapper = mapper;
         }
 
         public async Task<BaseResponseModel<BasketModel>> AddBasket(BasketModel basketModel)
@@ -135,6 +142,47 @@ namespace Basket.API.Services
                 Data = basketModel,
                 IsSuccess = true,
                 Message = "Basket item updated successfully"
+            };
+        }
+
+        public async Task<BaseResponseModel<bool>> BasketCheckout()
+        {
+            List<Checkout> checkouts = new List<Checkout>();
+
+            var data = await _database.ListRangeAsync(user);
+            foreach (var item in data)
+            {
+                Checkout checkout = new Checkout();
+                var basketModel = JsonConvert.DeserializeObject<BasketModel>(item);
+                checkout.GameID = basketModel.GameID;
+                checkout.GameName = basketModel.GameName;
+                checkout.GameAuthor = basketModel.GameAuthor;
+                checkout.Price = basketModel.Price;
+                checkout.Description = basketModel.Description;
+                checkout.UserID = user;
+                checkouts.Add(checkout);
+            }
+
+            if (checkouts.Count > 0)
+            {
+                foreach (var item in checkouts)
+                {
+                    await _publishEndpoint.Publish(_mapper.Map<BasketCheckout>(item));
+                }
+
+                return new BaseResponseModel<bool>
+                {
+                    Data = true,
+                    IsSuccess = true,
+                    Message = "Basket checked out successfully"
+                };
+            }
+
+            return new BaseResponseModel<bool>
+            {
+                Data = false,
+                IsSuccess = false,
+                Message = "Basket could not be checked out"
             };
         }
     }

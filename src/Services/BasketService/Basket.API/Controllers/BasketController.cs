@@ -52,5 +52,12 @@ namespace Basket.API.Controllers
             var response = await _basketService.UpdateBasketItem(basketModel, index);
             return Ok(response);
         }
+
+        [HttpPost("BasketCheckout")]
+        public async Task<IActionResult> BasketCheckout()
+        {
+            var response = await _basketService.BasketCheckout();
+            return Ok(response);
+        }
     }
 }
