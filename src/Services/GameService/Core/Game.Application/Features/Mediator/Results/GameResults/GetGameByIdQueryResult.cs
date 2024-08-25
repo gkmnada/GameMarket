@@ -11,6 +11,7 @@
         public string MinimumSystemRequirements { get; set; }
         public string RecommendedSystemRequirements { get; set; }
         public string Description { get; set; }
+        public string UserID { get; set; }
         public string CategoryID { get; set; }
         public DateTime CreatedAt { get; set; }
     }

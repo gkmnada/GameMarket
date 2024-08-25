@@ -5,6 +5,8 @@ using Game.Application.Features.Mediator.Commands.GameCommands;
 using Game.Application.UnitOfWork;
 using MassTransit;
 using MediatR;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace Game.Application.Features.Mediator.Handlers.GameHandlers
 {
@@ -13,17 +15,23 @@ namespace Game.Application.Features.Mediator.Handlers.GameHandlers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private string UserID;
 
-        public CreateGameCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IPublishEndpoint publishEndpoint)
+        public CreateGameCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IPublishEndpoint publishEndpoint, IHttpContextAccessor httpContextAccessor)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _publishEndpoint = publishEndpoint;
+            _httpContextAccessor = httpContextAccessor;
+            UserID = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
         }
 
         public async Task<BaseResponseModel> Handle(CreateGameCommand request, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<Domain.Entities.Game>(request);
+
+            entity.UserID = UserID;
 
             await _unitOfWork.Games.CreateAsync(entity);
             await _publishEndpoint.Publish(_mapper.Map<GameCreated>(entity));

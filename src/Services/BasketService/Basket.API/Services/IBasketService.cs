@@ -11,5 +11,6 @@ namespace Basket.API.Services
         Task<BaseResponseModel<bool>> RemoveBasketItem(long index);
         Task<BaseResponseModel<BasketModel>> UpdateBasketItem(BasketModel basketModel, long index);
         Task<BaseResponseModel<bool>> BasketCheckout();
+        Task<BaseResponseModel<bool>> ImplementCoupon(string couponCode, long index);
     }
 }

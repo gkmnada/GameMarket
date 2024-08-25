@@ -15,19 +15,19 @@ namespace Order.API.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private string UserId;
+        private string UserID;
 
         public OrderController(IMediator mediator, IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
-            UserId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            UserID = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
             _mediator = mediator;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetOrderByUser()
         {
-            var response = await _mediator.Send(new GetOrderByUserQuery(UserId));
+            var response = await _mediator.Send(new GetOrderByUserQuery(UserID));
             return Ok(response);
         }
     }

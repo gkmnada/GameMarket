@@ -59,5 +59,12 @@ namespace Basket.API.Controllers
             var response = await _basketService.BasketCheckout();
             return Ok(response);
         }
+
+        [HttpPut("ImplementCoupon")]
+        public async Task<IActionResult> ImplementCoupon(string couponCode, long index)
+        {
+            var response = await _basketService.ImplementCoupon(couponCode, index);
+            return Ok(response);
+        }
     }
 }

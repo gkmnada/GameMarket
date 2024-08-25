@@ -5,6 +5,7 @@ using Game.API.Registration;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Game.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         NameClaimType = "username",
     };
 });
+
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDbContext<GameContext>(options =>
 {
@@ -47,6 +50,8 @@ builder.Services.AddMassTransit(options =>
 builder.Services.ApplicationService(builder.Configuration);
 builder.Services.ApiService(builder.Configuration);
 
+builder.Services.AddGrpc();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -67,5 +72,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapGrpcService<GrpcGameService>();
 
 app.Run();

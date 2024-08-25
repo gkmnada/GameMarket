@@ -1,28 +1,11 @@
-using Basket.API.Clients;
-using Basket.API.Services;
-using Game.Contracts.Events;
-using MassTransit;
+using Discount.API.Context;
+using Discount.API.Repositories;
+using Discount.API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-builder.Services.AddMassTransit(options =>
-{
-    options.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("basket", false));
-    options.UsingRabbitMq((context, config) =>
-    {
-        config.Host(builder.Configuration["RabbitMQ:Host"], "/", host =>
-        {
-            host.Username(builder.Configuration["RabbitMQ:Username"] ?? "guest");
-            host.Password(builder.Configuration["RabbitMQ:Password"] ?? "guest");
-        });
-        config.ConfigureEndpoints(context);
-    });
-});
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
@@ -30,13 +13,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateAudience = false,
-        NameClaimType = "username"
+        NameClaimType = "username",
     };
 });
 
-builder.Services.AddScoped<IBasketService, BasketService>();
+builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddScoped<GrpcDiscountClient>();
+builder.Services.AddDbContext<DiscountContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+builder.Services.AddScoped<GrpcGameClient>();
+
+builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
+
+builder.Services.AddGrpc();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -58,5 +50,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapGrpcService<GrpcDiscountService>();
 
 app.Run();

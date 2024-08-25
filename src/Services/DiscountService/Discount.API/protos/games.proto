@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option csharp_namespace = "Discount.API.protos";
+
+service GrpcGame {
+	rpc GetGame(GetGameRequest) returns (GetGameResponse);
+}
+
+message GetGameRequest {
+	string gameID = 1;
+	string userID = 2;
+}
+
+message GetGameModel {
+	string gameName = 1;
+	double price = 2;
+	string videoPath = 3;
+	string description = 4;
+	string minimumSystemRequirements = 5;
+	string recommendedSystemRequirements = 6;
+	string userID = 7;
+	string categoryID = 8;
+}
+
+message GetGameResponse {
+	GetGameModel game = 1;
+}

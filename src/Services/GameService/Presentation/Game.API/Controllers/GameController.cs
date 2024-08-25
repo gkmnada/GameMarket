@@ -26,6 +26,13 @@ namespace Game.API.Controllers
             return Ok(response);
         }
 
+        [HttpGet("GetGameById")]
+        public async Task<IActionResult> GetGameById(string id)
+        {
+            var response = await _mediator.Send(new GetGameByIdQuery(id));
+            return Ok(response);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateGame(CreateGameCommand command)
         {

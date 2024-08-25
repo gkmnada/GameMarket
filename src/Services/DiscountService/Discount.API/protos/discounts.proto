@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option csharp_namespace = "Discount.API.protos";
+
+import "google/protobuf/timestamp.proto";
+
+service GrpcDiscount {
+	rpc GetDiscount(GetDiscountRequest) returns (GetDiscountResponse);
+}
+
+message GetDiscountRequest {
+	string couponCode = 1;
+}
+
+message GetDiscountModel {
+	google.protobuf.Timestamp expireDate = 1;
+	string couponCode = 2;
+	int32 amount = 3;
+	string gameID = 4;
+	string userID = 5;		
+}
+
+message GetDiscountResponse {
+	GetDiscountModel discount = 1;
+}

@@ -1,8 +1,6 @@
-﻿using Game.Domain.Base;
-
-namespace Game.Domain.Entities
+﻿namespace Discount.API.Models
 {
-    public class Game : BaseEntity
+    public class GameModel
     {
         public string GameName { get; set; }
         public string GameAuthor { get; set; }
@@ -14,7 +12,5 @@ namespace Game.Domain.Entities
         public string Description { get; set; }
         public string UserID { get; set; }
         public string CategoryID { get; set; }
-        public Category Category { get; set; }
-        public ICollection<GameImage> GameImages { get; set; }
     }
 }

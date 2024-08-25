@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Basket.API.Clients;
 using Basket.API.Common.Base;
 using Basket.API.Models;
 using Game.Contracts.Events;
@@ -15,18 +16,20 @@ namespace Basket.API.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         public IPublishEndpoint _publishEndpoint;
         private readonly IMapper _mapper;
-        public string user;
+        public string UserID;
         public string connectionString;
+        private readonly GrpcDiscountClient _grpcDiscountClient;
 
-        public BasketService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, IPublishEndpoint publishEndpoint, IMapper mapper)
+        public BasketService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, IPublishEndpoint publishEndpoint, IMapper mapper, GrpcDiscountClient grpcDiscountClient)
         {
             connectionString = configuration.GetValue<string>("RedisDatabase");
             ConnectionMultiplexer connection = ConnectionMultiplexer.Connect(connectionString);
             _database = connection.GetDatabase();
             _httpContextAccessor = httpContextAccessor;
-            user = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            UserID = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
             _publishEndpoint = publishEndpoint;
             _mapper = mapper;
+            _grpcDiscountClient = grpcDiscountClient;
         }
 
         public async Task<BaseResponseModel<BasketModel>> AddBasket(BasketModel basketModel)
@@ -34,7 +37,7 @@ namespace Basket.API.Services
             if (basketModel is not null)
             {
                 var data = JsonConvert.SerializeObject(basketModel);
-                var response = await _database.ListRightPushAsync(user, data);
+                var response = await _database.ListRightPushAsync(UserID, data);
 
                 return new BaseResponseModel<BasketModel>
                 {
@@ -56,7 +59,7 @@ namespace Basket.API.Services
 
         public async Task<BaseResponseModel<BasketModel>> GetBasketItem(long index)
         {
-            var data = await _database.ListGetByIndexAsync(user, index);
+            var data = await _database.ListGetByIndexAsync(UserID, index);
             if (data.HasValue)
             {
                 var basketModel = JsonConvert.DeserializeObject<BasketModel>(data);
@@ -80,7 +83,7 @@ namespace Basket.API.Services
 
         public async Task<BaseResponseModel<List<BasketModel>>> GetBasketItems()
         {
-            var data = await _database.ListRangeAsync(user);
+            var data = await _database.ListRangeAsync(UserID);
             if (data.Any())
             {
                 var basketModels = new List<BasketModel>();
@@ -110,8 +113,8 @@ namespace Basket.API.Services
 
         public async Task<BaseResponseModel<bool>> RemoveBasketItem(long index)
         {
-            var willDelete = await _database.ListGetByIndexAsync(user, index);
-            var response = await _database.ListRemoveAsync(user, willDelete);
+            var willDelete = await _database.ListGetByIndexAsync(UserID, index);
+            var response = await _database.ListRemoveAsync(UserID, willDelete);
             if (response > 0)
             {
                 return new BaseResponseModel<bool>
@@ -135,7 +138,7 @@ namespace Basket.API.Services
         public async Task<BaseResponseModel<BasketModel>> UpdateBasketItem(BasketModel basketModel, long index)
         {
             var data = JsonConvert.SerializeObject(basketModel);
-            await _database.ListSetByIndexAsync(user, index, data);
+            await _database.ListSetByIndexAsync(UserID, index, data);
 
             return new BaseResponseModel<BasketModel>
             {
@@ -149,7 +152,7 @@ namespace Basket.API.Services
         {
             List<Checkout> checkouts = new List<Checkout>();
 
-            var data = await _database.ListRangeAsync(user);
+            var data = await _database.ListRangeAsync(UserID);
             foreach (var item in data)
             {
                 Checkout checkout = new Checkout();
@@ -159,7 +162,7 @@ namespace Basket.API.Services
                 checkout.GameAuthor = basketModel.GameAuthor;
                 checkout.Price = basketModel.Price;
                 checkout.Description = basketModel.Description;
-                checkout.UserID = user;
+                checkout.UserID = UserID;
                 checkouts.Add(checkout);
             }
 
@@ -184,6 +187,35 @@ namespace Basket.API.Services
                 IsSuccess = false,
                 Message = "Basket could not be checked out"
             };
+        }
+
+        public async Task<BaseResponseModel<bool>> ImplementCoupon(string couponCode, long index)
+        {
+            var discount = _grpcDiscountClient.GetDiscount(couponCode);
+
+            if (discount != null)
+            {
+                var response = await _database.ListGetByIndexAsync(UserID, index);
+                var basketModel = JsonConvert.DeserializeObject<BasketModel>(response);
+                basketModel.Price = basketModel.Price - (basketModel.Price * discount.Amount / 100);
+                await _database.ListSetByIndexAsync(UserID, index, JsonConvert.SerializeObject(basketModel));
+
+                return new BaseResponseModel<bool>
+                {
+                    Data = true,
+                    IsSuccess = true,
+                    Message = "Coupon implemented successfully"
+                };
+            }
+            else
+            {
+                return new BaseResponseModel<bool>
+                {
+                    Data = false,
+                    IsSuccess = false,
+                    Message = "Coupon could not be implemented"
+                };
+            }
         }
     }
 }
