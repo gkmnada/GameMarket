@@ -50,4 +50,17 @@ services:
       - DatabaseSettings__ConnectionString=mongodb://host.docker.internal:27017
       - DatabaseSettings__DatabaseName=SearchDB 
     ports:
-    - 7126:8080
+      - 7126:8080
+  filter-svc:
+    image: gamemarket/filter-svc:latest
+    build:
+      context: .
+      dockerfile: ./src/Services/FilterService/Filter.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - RabbitMQ__Host=localhost:5672
+      - Elasticseach__Url=http://elasticsearch:9200
+      - Elasticseach__IndexName=filter-game
+    ports:
+      - 7127:8080
