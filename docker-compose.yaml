@@ -38,3 +38,16 @@ services:
     ports:
       - 7125:8080
       - 9999:9999
+  search-svc:
+    image: gamemarket/search-svc:latest
+    build:
+      context: .
+      dockerfile: ./src/Services/SearchService/Search.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - RabbitMQ__Host=localhost:5672
+      - DatabaseSettings__ConnectionString=mongodb://host.docker.internal:27017
+      - DatabaseSettings__DatabaseName=SearchDB 
+    ports:
+    - 7126:8080
