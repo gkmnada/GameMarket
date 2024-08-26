@@ -97,3 +97,16 @@ services:
       - DiscountGRPC=http://discount-svc:8888
     ports:
       - 7128:8080
+  order-svc:
+    image: gamemarket/order-svc:latest
+    build:
+      context: .
+      dockerfile: ./src/Services/OrderService/Presentation/Order.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - connectionStrings__IdentityDbConnection=Server=ADAPC\\SQLEXPRESS;Database=OrderDB;Integrated Security=True;TrustServerCertificate=True;
+      - IdentityServer=http://identity-svc
+      - RabbitMQ__Host=localhost:5672
+    ports:
+      - 7129:8080
