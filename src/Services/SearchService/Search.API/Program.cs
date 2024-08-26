@@ -16,10 +16,10 @@ builder.Services.AddMassTransit(options =>
     options.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false));
     options.UsingRabbitMq((context, config) =>
     {
-        config.Host(builder.Configuration["RabbitMQ:Host"], "/", host =>
+        config.Host(builder.Configuration["RabbitMQ"], "/", host =>
         {
-            host.Username(builder.Configuration["RabbitMQ:Username"] ?? "guest");
-            host.Password(builder.Configuration["RabbitMQ:Password"] ?? "guest");
+            host.Username("guest");
+            host.Password("guest");
         });
 
         config.ReceiveEndpoint("search-game-created", e =>

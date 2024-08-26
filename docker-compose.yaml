@@ -1,0 +1,40 @@
+services:
+  identity-svc:
+    image: gamemarket/identity-svc:latest
+    build:
+      context: .
+      dockerfile: ./src/Services/IdentityService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:8080
+      - connectionStrings__IdentityDbConnection=Server=postgres;Port=5432;User Id=postgres;Password=Mamakasml06;Database=IdentityDB
+    ports:
+      - 5001:8080
+  gateway-svc:
+    image: gamemarket/gateway-svc:latest
+    build:
+      context: .
+      dockerfile: ./src/ApiGateways/ApiGateway.YARP/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:8080
+    ports:
+      - 6001:8080
+  game-svc:
+    image: gamemarket/game-svc:latest
+    build:
+      context: .
+      dockerfile: ./src/Services/GameService/Presentation/Game.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - connectionStrings__IdentityDbConnection=Server=ADAPC\\SQLEXPRESS;Database=GameMarketDB;Integrated Security=True;TrustServerCertificate=True;
+      - IdentityServer=http://identity-svc
+      - RabbitMQ__Host=localhost:5672
+      - Kestrel__Endpoints__GRPC__Url=http://+:9999
+      - Kestrel__Endpoints__GRPC__Protocols=Http2
+      - Kestrel__Endpoints__WebApi__Protocols=Http1
+      - Kestrel__Endpoints__WebApi__Url=http://+:8080
+    ports:
+      - 7125:8080
+      - 9999:9999

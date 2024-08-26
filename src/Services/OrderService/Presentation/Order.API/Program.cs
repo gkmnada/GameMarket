@@ -13,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.Authority = builder.Configuration["IdentityServer"];
+    options.RequireHttpsMetadata = false;
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateAudience = false,
@@ -39,10 +40,10 @@ builder.Services.AddMassTransit(options =>
     options.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("basket", false));
     options.UsingRabbitMq((context, config) =>
     {
-        config.Host(builder.Configuration["RabbitMQ:Host"], "/", host =>
+        config.Host(builder.Configuration["RabbitMQ"], "/", host =>
         {
-            host.Username(builder.Configuration["RabbitMQ:Username"] ?? "guest");
-            host.Password(builder.Configuration["RabbitMQ:Password"] ?? "guest");
+            host.Username("guest");
+            host.Password("guest");
         });
 
         config.ReceiveEndpoint("order-created", e =>

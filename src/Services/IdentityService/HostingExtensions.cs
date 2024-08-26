@@ -30,6 +30,12 @@ internal static class HostingExtensions
                 options.Events.RaiseSuccessEvents = true;
 
                 // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
+
+                if (builder.Environment.IsEnvironment("Docker"))
+                {
+                    options.IssuerUri = "identity-svc";
+                }
+
                 options.EmitStaticAudienceClaim = true;
             })
             .AddInMemoryIdentityResources(Config.IdentityResources)
