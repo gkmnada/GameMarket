@@ -6,5 +6,6 @@ namespace Order.Application.Interfaces
     {
         Task<List<Domain.Entities.Order>> GetOrderByUserAsync(string id);
         Task CreateOrderAsync(Domain.Entities.Order entity);
+        Task UpdateIsPaidAsync(List<Domain.Entities.Order> entity);
     }
 }

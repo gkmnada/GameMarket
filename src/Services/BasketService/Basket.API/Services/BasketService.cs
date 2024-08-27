@@ -173,6 +173,8 @@ namespace Basket.API.Services
                     await _publishEndpoint.Publish(_mapper.Map<BasketCheckout>(item));
                 }
 
+                await _database.KeyDeleteAsync(UserID);
+
                 return new BaseResponseModel<bool>
                 {
                     Data = true,

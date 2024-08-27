@@ -26,5 +26,15 @@ namespace Order.Persistence.Repositories
             var values = await _context.Orders.Where(x => x.UserID == id && x.IsPaid == false).ToListAsync();
             return values;
         }
+
+        public async Task UpdateIsPaidAsync(List<Domain.Entities.Order> entity)
+        {
+            foreach (var item in entity)
+            {
+                var result = await _context.Orders.FirstOrDefaultAsync(x => x.OrderID == item.OrderID);
+                result.IsPaid = true;
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }
