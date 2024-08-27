@@ -16,5 +16,6 @@ namespace Game.Domain.Entities
         public string CategoryID { get; set; }
         public Category Category { get; set; }
         public ICollection<GameImage> GameImages { get; set; }
+        public ICollection<MyGame> MyGames { get; set; }
     }
 }

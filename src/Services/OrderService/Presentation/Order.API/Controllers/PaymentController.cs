@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Order.API.Services;
 using Order.Application.Models;
-using Order.Application.Services;
 
 namespace Order.API.Controllers
 {

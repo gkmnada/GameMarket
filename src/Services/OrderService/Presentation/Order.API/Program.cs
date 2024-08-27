@@ -3,12 +3,12 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Order.API.Clients;
+using Order.API.Services;
 using Order.Application.Consumers;
 using Order.Application.Interfaces;
-using Order.Application.Services;
 using Order.Persistence.Context;
 using Order.Persistence.Repositories;
-using Order.Persistence.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +30,8 @@ builder.Services.AddDbContext<OrderContext>(options =>
 
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
+
+builder.Services.AddScoped<GrpcMyGameClient>();
 
 builder.Services.AddHttpContextAccessor();
 

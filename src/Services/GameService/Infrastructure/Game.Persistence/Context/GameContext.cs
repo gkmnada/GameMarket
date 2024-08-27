@@ -13,6 +13,7 @@ namespace Game.Persistence.Context
         public DbSet<Category> Categories { get; set; }
         public DbSet<Domain.Entities.Game> Games { get; set; }
         public DbSet<GameImage> GameImages { get; set; }
+        public DbSet<MyGame> MyGames { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,6 +27,11 @@ namespace Game.Persistence.Context
             modelBuilder.Entity<GameImage>()
                 .HasOne(x => x.Game)
                 .WithMany(x => x.GameImages)
+                .HasForeignKey(x => x.GameID);
+
+            modelBuilder.Entity<MyGame>()
+                .HasOne(x => x.Game)
+                .WithMany(x => x.MyGames)
                 .HasForeignKey(x => x.GameID);
 
             modelBuilder.AddInboxStateEntity();

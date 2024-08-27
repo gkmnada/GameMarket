@@ -1,18 +1,16 @@
 ﻿using Iyzipay;
 using Iyzipay.Model;
 using Iyzipay.Request;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
+using Order.API.Clients;
 using Order.Application.Common.Base;
 using Order.Application.Interfaces;
 using Order.Application.Models;
-using Order.Application.Services;
 using Order.Application.Settings;
 using Order.Persistence.Context;
 using System.Globalization;
 using System.Security.Claims;
 
-namespace Order.Persistence.Services
+namespace Order.API.Services
 {
     public class PaymentService : IPaymentService
     {
@@ -20,13 +18,15 @@ namespace Order.Persistence.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         public string UserID;
         private readonly IOrderRepository _orderRepository;
+        private readonly GrpcMyGameClient _myGameClient;
 
-        public PaymentService(OrderContext context, IHttpContextAccessor httpContextAccessor, IOrderRepository orderRepository)
+        public PaymentService(OrderContext context, IHttpContextAccessor httpContextAccessor, IOrderRepository orderRepository, GrpcMyGameClient myGameClient)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
             UserID = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
             _orderRepository = orderRepository;
+            _myGameClient = myGameClient;
         }
 
         public async Task<BaseResponseModel> PaymentAsync(PaymentForm paymentForm)
@@ -120,7 +120,21 @@ namespace Order.Persistence.Services
 
             if (payment.Status == "success")
             {
-                // await _orderRepository.UpdateIsPaidAsync(order);
+
+                foreach (var item in order)
+                {
+                    var isPaid = await _orderRepository.UpdateIsPaidAsync(item);
+                    var check = _myGameClient.SaveMyGame(UserID, item.GameID);
+
+                    if (!isPaid || !check)
+                    {
+                        return new BaseResponseModel
+                        {
+                            IsSuccess = false,
+                            Message = "Payment is not successful"
+                        };
+                    }
+                }
 
                 return new BaseResponseModel
                 {

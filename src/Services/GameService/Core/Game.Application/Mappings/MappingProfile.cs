@@ -4,6 +4,7 @@ using Game.Application.Features.Mediator.Commands.CategoryCommands;
 using Game.Application.Features.Mediator.Commands.GameCommands;
 using Game.Domain.Entities;
 using Game.Application.Features.Mediator.Results.GameResults;
+using Game.Application.Models;
 
 namespace Game.Application.Mappings
 {
@@ -19,6 +20,9 @@ namespace Game.Application.Mappings
             CreateMap<Domain.Entities.Game, GameDeleted>().ReverseMap();
             CreateMap<Domain.Entities.Game, GetGameQueryResult>().ReverseMap();
             CreateMap<Domain.Entities.Game, GetGameByIdQueryResult>().ReverseMap();
+
+            // MyGame Mapping
+            CreateMap<MyGame, MyGameModel>().ReverseMap();
 
             // Category Mapping
             CreateMap<Category, CreateCategoryCommand>().ReverseMap();

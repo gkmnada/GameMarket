@@ -1,7 +1,7 @@
 ﻿using Order.Application.Common.Base;
 using Order.Application.Models;
 
-namespace Order.Application.Services
+namespace Order.API.Services
 {
     public interface IPaymentService
     {

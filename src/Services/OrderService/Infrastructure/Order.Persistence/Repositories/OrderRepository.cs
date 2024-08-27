@@ -27,14 +27,13 @@ namespace Order.Persistence.Repositories
             return values;
         }
 
-        public async Task UpdateIsPaidAsync(List<Domain.Entities.Order> entity)
+        public async Task<bool> UpdateIsPaidAsync(Domain.Entities.Order entity)
         {
-            foreach (var item in entity)
-            {
-                var result = await _context.Orders.FirstOrDefaultAsync(x => x.OrderID == item.OrderID);
-                result.IsPaid = true;
-                await _context.SaveChangesAsync();
-            }
+            var result = await _context.Orders.FirstOrDefaultAsync(x => x.OrderID == entity.OrderID);
+            result.IsPaid = true;
+            await _context.SaveChangesAsync();
+
+            return true;
         }
     }
 }
